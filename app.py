@@ -4,8 +4,16 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todolist.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'tu_clave_secreta_aqui')
+
+# Configuración de base de datos para diferentes entornos
+if os.environ.get('DATABASE_URL'):
+    # En producción (Render) usar PostgreSQL si está disponible
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+else:
+    # En desarrollo usar SQLite
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todolist.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -78,4 +86,7 @@ def toggle_todo(id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    
+    # Usar puerto de Render o 5000 para desarrollo
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=os.environ.get('FLASK_ENV') == 'development')
