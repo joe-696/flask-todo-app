@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación Terminal - Configuración Git y CI/CD</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .terminal-container {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+        
+        .terminal-header {
+            background-color: #21262d;
+            margin: -20px -20px 20px -20px;
+            padding: 10px 20px;
+            border-bottom: 1px solid #30363d;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+            color: #7c3aed;
+        }
+        
+        .command-line {
+            margin: 10px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .prompt {
+            color: #58a6ff;
+            margin-right: 5px;
+            flex-shrink: 0;
+        }
+        
+        .command {
+            color: #7c3aed;
+            font-weight: bold;
+        }
+        
+        .output {
+            color: #8b949e;
+            margin-left: 20px;
+            white-space: pre-wrap;
+        }
+        
+        .success {
+            color: #3fb950;
+        }
+        
+        .warning {
+            color: #d29922;
+        }
+        
+        .error {
+            color: #f85149;
+        }
+        
+        .section-title {
+            color: #f0f6fc;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 30px 0 15px 0;
+            border-bottom: 2px solid #7c3aed;
+            padding-bottom: 5px;
+        }
+        
+        .highlight {
+            background-color: #ffd33d22;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .typing-animation {
+            overflow: hidden;
+            border-right: 3px solid #7c3aed;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #7c3aed }
+        }
+        
+        .file-content {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            color: #c9d1d9;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #7c3aed;">🚀 SIMULACIÓN DE TERMINAL - CONFIGURACIÓN GIT Y CI/CD</h1>
+    
+    <div class="terminal-container">
+        <div class="terminal-header">💻 PowerShell - Configuración del Proyecto Flask Todo App</div>
+        
+        <div class="section-title">📁 Inicialización del repositorio local</div>
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git init</span>
+        </div>
+        <div class="output success">Initialized empty Git repository in D:/descaargas 2/pruebas de sw/yo/.git/</div>
+        
+        <div class="section-title">👤 Configuración de credenciales de usuario</div>
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git config --global user.name "joe-696"</span>
+        </div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git config --global user.email "jefferson.mendoza@unas.edu.pe"</span>
+        </div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git config --list</span>
+        </div>
+        <div class="output success">user.name=joe-696
+user.email=jefferson.mendoza@unas.edu.pe
+core.repositoryformatversion=0
+core.filemode=false
+core.bare=false</div>
+        
+        <div class="section-title">🚫 Creación de .gitignore apropiado</div>
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">New-Item -ItemType File -Name ".gitignore"</span>
+        </div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">Add-Content .gitignore @"</span>
+        </div>
+        
+        <div class="file-content">
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Base de datos
+*.db
+instance/
+*.sqlite3
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Flask
+instance/
+.webassets-cache
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+"@</div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">Get-Content .gitignore</span>
+        </div>
+        <div class="output"># Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Base de datos
+*.db
+instance/
+*.sqlite3
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo</div>
+        
+        <div class="section-title">🔗 Conexión con repositorio remoto en GitHub</div>
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git add .</span>
+        </div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git commit -m "Initial commit: Flask Todo App con CI/CD setup"</span>
+        </div>
+        <div class="output success">[master (root-commit) b424ccf] Initial commit: Flask Todo App con CI/CD setup
+ 6 files changed, 127 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 app.py
+ create mode 100644 requirements.txt
+ create mode 100644 Procfile
+ create mode 100644 README.md</div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git remote add origin https://github.com/joe-696/flask-todo-app.git</span>
+        </div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git branch -M main</span>
+        </div>
+        
+        <div class="section-title">🔐 Configuración de token de acceso personal con permisos de workflow</div>
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">$token = Read-Host "Ingrese su GitHub Personal Access Token" -AsSecureString</span>
+        </div>
+        <div class="output warning">Ingrese su GitHub Personal Access Token: ••••••••••••••••••••••••••••••••••••••••</div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git remote set-url origin https://joe-696:$([System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($token)))@github.com/joe-696/flask-todo-app.git</span>
+        </div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git push -u origin main</span>
+        </div>
+        <div class="output success">Enumerating objects: 20, done.
+Counting objects: 100% (20/20), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (16/16), done.
+Writing objects: 100% (20/20), 6.07 KiB | 3.03 MiB/s, done.
+Total 20 (delta 5), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (5/5), done.
+To https://github.com/joe-696/flask-todo-app.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.</div>
+        
+        <div class="section-title">✅ Verificación de la configuración</div>
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git remote -v</span>
+        </div>
+        <div class="output">origin  https://joe-696:***@github.com/joe-696/flask-todo-app.git (fetch)
+origin  https://joe-696:***@github.com/joe-696/flask-todo-app.git (push)</div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git status</span>
+        </div>
+        <div class="output success">On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean</div>
+        
+        <div class="section-title">⚙️ Creación de la estructura de GitHub Actions</div>
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">New-Item -ItemType Directory -Path ".github\workflows" -Force</span>
+        </div>
+        <div class="output success">    Directory: D:\descaargas 2\pruebas de sw\yo\.github
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         7/7/2025   6:41 PM                workflows</div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">New-Item -ItemType File -Path ".github\workflows\ci-cd.yml"</span>
+        </div>
+        
+        <div class="file-content">
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11]
+    
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
+    
+    - name: Run tests with coverage
+      run: |
+        pytest --cov=app --cov-report=xml
+    
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Run security scan
+      uses: securecodewarrior/github-action-add-sarif@v1
+      with:
+        sarif-file: security-scan-results.sarif
+
+  deploy:
+    needs: [test, security-scan]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Deploy to production
+      run: |
+        echo "🚀 Deployment triggered!"
+        echo "✅ Code tested successfully"
+        echo "🔒 Security scan passed"
+        echo "📦 Deploying to production environment..."
+        echo "🎉 Deployment completed successfully!"</div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git add .github/</span>
+        </div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git commit -m "Add GitHub Actions CI/CD pipeline"</span>
+        </div>
+        <div class="output success">[main 8f3a9c1] Add GitHub Actions CI/CD pipeline
+ 1 file changed, 45 insertions(+)
+ create mode 100644 .github/workflows/ci-cd.yml</div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">git push origin main</span>
+        </div>
+        <div class="output success">Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 1.23 KiB | 1.23 MiB/s, done.
+Total 5 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), done.
+To https://github.com/joe-696/flask-todo-app.git
+   b424ccf..8f3a9c1  main -> main</div>
+        
+        <div class="section-title">🎯 Verificación final del setup</div>
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">tree /f</span>
+        </div>
+        <div class="output">D:\DESCAARGAS 2\PRUEBAS DE SW\YO
+│   .gitignore
+│   app.py
+│   Procfile
+│   README.md
+│   requirements.txt
+│
+└───.github
+    └───workflows
+            ci-cd.yml</div>
+        
+        <div class="command-line">
+            <span class="prompt">PS D:\descaargas 2\pruebas de sw\yo></span>
+            <span class="command">Write-Host "🎉 ¡Configuración completada exitosamente!" -ForegroundColor Green</span>
+        </div>
+        <div class="output success">🎉 ¡Configuración completada exitosamente!</div>
+        
+        <div style="margin-top: 20px; padding: 15px; background-color: #1f6f50; border-radius: 6px;">
+            <strong>✅ Resumen de configuración completada:</strong><br>
+            • ✓ Repositorio Git inicializado<br>
+            • ✓ Credenciales de usuario configuradas<br>
+            • ✓ Archivo .gitignore creado con reglas para Python/Flask<br>
+            • ✓ Repositorio remoto conectado en GitHub<br>
+            • ✓ Token de acceso personal configurado<br>
+            • ✓ Pipeline CI/CD con GitHub Actions implementado<br>
+            • ✓ Estructura de proyecto lista para desarrollo
+        </div>
+    </div>
+
+    <script>
+        // Animación de escritura para simular comandos en tiempo real
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Terminal simulation loaded successfully!');
+            
+            // Agregar efectos hover a los comandos
+            const commands = document.querySelectorAll('.command');
+            commands.forEach(cmd => {
+                cmd.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#7c3aed22';
+                    this.style.borderRadius = '3px';
+                    this.style.padding = '2px 4px';
+                });
+                
+                cmd.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = 'transparent';
+                    this.style.padding = '0';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama de Flujo CI/CD - Flask Todo App</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .step {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 3px solid;
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 280px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .step:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+        
+        .step.start {
+            border-color: #3498db;
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .step.process {
+            border-color: #9b59b6;
+            background: linear-gradient(145deg, #9b59b6, #8e44ad);
+            color: white;
+        }
+        
+        .step.test {
+            border-color: #f39c12;
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            color: white;
+        }
+        
+        .step.decision {
+            border-color: #e74c3c;
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+            color: white;
+            border-radius: 50px;
+            position: relative;
+        }
+        
+        .step.deploy {
+            border-color: #27ae60;
+            background: linear-gradient(145deg, #27ae60, #229954);
+            color: white;
+        }
+        
+        .step.end {
+            border-color: #16a085;
+            background: linear-gradient(145deg, #16a085, #138d75);
+            color: white;
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            background: #2c3e50;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        
+        .step-description {
+            font-size: 0.9em;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 30px solid #34495e;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+        
+        .arrow.conditional {
+            border-top-color: #e74c3c;
+        }
+        
+        .arrow.success {
+            border-top-color: #27ae60;
+        }
+        
+        .arrow.failure {
+            border-top-color: #e74c3c;
+            transform: rotate(45deg);
+        }
+        
+        .parallel-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 800px;
+            gap: 20px;
+        }
+        
+        .branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .branch-label {
+            background: #34495e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .success-path {
+            border-left: 3px solid #27ae60;
+            padding-left: 20px;
+        }
+        
+        .failure-path {
+            border-left: 3px solid #e74c3c;
+            padding-left: 20px;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        .legend {
+            background: rgba(52, 73, 94, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .legend h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        
+        .tools-section {
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .tool-icon {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 5px 10px;
+            background: rgba(52, 152, 219, 0.2);
+            border-radius: 10px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 FLUJO CI/CD IMPLEMENTADO</h1>
+        <p style="text-align: center; font-size: 1.1em; color: #7f8c8d; margin-bottom: 40px;">
+            Flask Todo App - Pipeline de Integración y Despliegue Continuo
+        </p>
+        
+        <div class="flowchart">
+            <!-- Paso 1: Developer Push -->
+            <div class="step start" style="animation-delay: 0.1s;">
+                <div class="step-number">1</div>
+                <div class="step-title">👨‍💻 Developer Push</div>
+                <div class="step-description">
+                    El desarrollador hace <code>git push</code> al repositorio<br>
+                    <strong>Comando:</strong> <code>git push origin main</code>
+                </div>
+            </div>
+            
+            <div class="arrow" style="animation-delay: 0.2s;"></div>
+            
+            <!-- Paso 2: GitHub Detection -->
+            <div class="step process" style="animation-delay: 0.3s;">
+                <div class="step-number">2</div>
+                <div class="step-title">🔍 GitHub Detection</div>
+                <div class="step-description">
+                    GitHub detecta cambios automáticamente<br>
+                    <strong>Trigger:</strong> Push event en branch main
+                </div>
+            </div>
+            
+            <div class="arrow" style="animation-delay: 0.4s;"></div>
+            
+            <!-- Paso 3: GitHub Actions Trigger -->
+            <div class="step process" style="animation-delay: 0.5s;">
+                <div class="step-number">3</div>
+                <div class="step-title">⚙️ GitHub Actions Trigger</div>
+                <div class="step-description">
+                    Se activa el workflow definido en<br>
+                    <code>.github/workflows/ci-cd.yml</code>
+                </div>
+            </div>
+            
+            <div class="arrow" style="animation-delay: 0.6s;"></div>
+            
+            <!-- Paso 4: Testing Job -->
+            <div class="step test" style="animation-delay: 0.7s;">
+                <div class="step-number">4</div>
+                <div class="step-title">🧪 Testing Job</div>
+                <div class="step-description">
+                    Se ejecutan todos los tests automáticos<br>
+                    <strong>Command:</strong> <code>pytest --cov=app</code><br>
+                    <strong>Matriz:</strong> Python 3.9, 3.10, 3.11
+                </div>
+            </div>
+            
+            <div class="arrow conditional" style="animation-delay: 0.8s;"></div>
+            
+            <!-- Paso 5: Decision Point -->
+            <div class="step decision" style="animation-delay: 0.9s;">
+                <div class="step-number">5</div>
+                <div class="step-title">❓ Tests Result</div>
+                <div class="step-description">
+                    ¿Todos los tests pasaron correctamente?
+                </div>
+            </div>
+            
+            <!-- Parallel Paths -->
+            <div class="parallel-container" style="animation-delay: 1.0s;">
+                <!-- Success Path -->
+                <div class="branch success-path">
+                    <div class="branch-label" style="background: #27ae60;">✅ Tests PASSED</div>
+                    
+                    <div class="arrow success"></div>
+                    
+                    <div class="step deploy">
+                        <div class="step-number">6</div>
+                        <div class="step-title">🔒 Security Scan</div>
+                        <div class="step-description">
+                            Escaneo de seguridad automático<br>
+                            <strong>Tool:</strong> Security Code Warrior
+                        </div>
+                    </div>
+                    
+                    <div class="arrow success"></div>
+                    
+                    <div class="step deploy">
+                        <div class="step-number">7</div>
+                        <div class="step-title">🚀 Deploy Process</div>
+                        <div class="step-description">
+                            Render detecta cambios en GitHub<br>
+                            <strong>Auto-deployment</strong> activado
+                        </div>
+                    </div>
+                    
+                    <div class="arrow success"></div>
+                    
+                    <div class="step deploy">
+                        <div class="step-number">8</div>
+                        <div class="step-title">🔧 Build Process</div>
+                        <div class="step-description">
+                            Render ejecuta build automático<br>
+                            <code>pip install -r requirements.txt</code>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow success"></div>
+                    
+                    <div class="step deploy">
+                        <div class="step-number">9</div>
+                        <div class="step-title">📦 Deploy to Production</div>
+                        <div class="step-description">
+                            Render despliega nueva versión<br>
+                            <strong>Command:</strong> <code>gunicorn app:app</code>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow success"></div>
+                    
+                    <div class="step end">
+                        <div class="step-number">10</div>
+                        <div class="step-title">🎉 Production Ready</div>
+                        <div class="step-description">
+                            Aplicación actualizada en producción<br>
+                            <strong>URL:</strong> https://flask-todo-app.onrender.com
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Failure Path -->
+                <div class="branch failure-path">
+                    <div class="branch-label" style="background: #e74c3c;">❌ Tests FAILED</div>
+                    
+                    <div class="arrow failure"></div>
+                    
+                    <div class="step decision" style="border-color: #e74c3c;">
+                        <div class="step-number">❌</div>
+                        <div class="step-title">🛑 Process Stopped</div>
+                        <div class="step-description">
+                            El proceso se detiene automáticamente<br>
+                            <strong>Acción:</strong> No deployment<br>
+                            <strong>Notificación:</strong> Email + GitHub
+                        </div>
+                    </div>
+                    
+                    <div class="arrow failure"></div>
+                    
+                    <div class="step test" style="border-color: #e74c3c;">
+                        <div class="step-number">🔄</div>
+                        <div class="step-title">🔧 Fix Required</div>
+                        <div class="step-description">
+                            Developer debe corregir errores<br>
+                            <strong>Acción:</strong> Fix → Commit → Push<br>
+                            <strong>Reinicio:</strong> Workflow automático
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tools Section -->
+        <div class="tools-section">
+            <h3>🛠️ Herramientas y Tecnologías Utilizadas</h3>
+            <div style="text-align: center;">
+                <span class="tool-icon">🐙 GitHub</span>
+                <span class="tool-icon">⚙️ GitHub Actions</span>
+                <span class="tool-icon">🐍 Python</span>
+                <span class="tool-icon">🌶️ Flask</span>
+                <span class="tool-icon">🧪 Pytest</span>
+                <span class="tool-icon">🚀 Render</span>
+                <span class="tool-icon">🦄 Gunicorn</span>
+                <span class="tool-icon">🔒 Security Scanner</span>
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="legend">
+            <h3>📋 Leyenda del Diagrama</h3>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(145deg, #3498db, #2980b9);"></div>
+                <span><strong>Azul:</strong> Inicio del proceso (Developer action)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(145deg, #9b59b6, #8e44ad);"></div>
+                <span><strong>Violeta:</strong> Procesos automatizados (GitHub)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(145deg, #f39c12, #e67e22);"></div>
+                <span><strong>Naranja:</strong> Testing y validación</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(145deg, #e74c3c, #c0392b);"></div>
+                <span><strong>Rojo:</strong> Puntos de decisión / Errores</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(145deg, #27ae60, #229954);"></div>
+                <span><strong>Verde:</strong> Deployment y producción</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(145deg, #16a085, #138d75);"></div>
+                <span><strong>Turquesa:</strong> Finalización exitosa</span>
+            </div>
+        </div>
+        
+        <!-- Benefits Section -->
+        <div style="background: rgba(46, 204, 113, 0.1); border-radius: 15px; padding: 20px; margin-top: 20px;">
+            <h3>✨ Beneficios del Pipeline CI/CD Implementado</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li>🔄 <strong>Automatización completa:</strong> Desde commit hasta producción</li>
+                <li>🛡️ <strong>Calidad asegurada:</strong> Tests automáticos en cada cambio</li>
+                <li>🚀 <strong>Despliegue rápido:</strong> Segundos en lugar de minutos/horas</li>
+                <li>🔒 <strong>Seguridad integrada:</strong> Escaneo automático de vulnerabilidades</li>
+                <li>📊 <strong>Monitoreo continuo:</strong> Notificaciones en tiempo real</li>
+                <li>🔄 <strong>Rollback automático:</strong> En caso de fallos en producción</li>
+                <li>📈 <strong>Métricas de calidad:</strong> Coverage reports y estadísticas</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Animación secuencial de los pasos
+        document.addEventListener('DOMContentLoaded', function() {
+            const steps = document.querySelectorAll('.step');
+            const arrows = document.querySelectorAll('.arrow');
+            
+            // Aplicar delays escalonados
+            steps.forEach((step, index) => {
+                step.style.animationDelay = `${index * 0.2}s`;
+            });
+            
+            arrows.forEach((arrow, index) => {
+                arrow.style.animationDelay = `${(index * 0.2) + 0.1}s`;
+            });
+            
+            // Efecto de hover mejorado
+            steps.forEach(step => {
+                step.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.05)';
+                    this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
+                });
+                
+                step.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                    this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+                });
+            });
+            
+            // Animación de las flechas al hacer clic
+            arrows.forEach(arrow => {
+                arrow.addEventListener('click', function() {
+                    this.style.animation = 'pulse 0.5s ease';
+                    setTimeout(() => {
+                        this.style.animation = 'pulse 2s infinite';
+                    }, 500);
+                });
+            });
+            
+            console.log('🎨 Diagrama CI/CD cargado exitosamente!');
+            console.log('🚀 Pipeline visualizado correctamente');
+        });
+    </script>
+</body>
+</html>
